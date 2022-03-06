@@ -1,0 +1,1 @@
+echo $args[0] >> C:\SSH\links.list

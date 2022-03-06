@@ -1,0 +1,10 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon]
+"Shell"="cmd.exe /C start C:\\SSH\\ssh_start.vbs"
+"DisableLockWorkstation"=dword:00000000
+"EnableFirstLogonAnimation"=dword:00000000
+"LastUsedUsername"="your-windows-username"
+"DefaultUserName"="your-windows-username"
+"DefaultPassword"="your-windows-password"
+"AutoAdminLogon"="1"

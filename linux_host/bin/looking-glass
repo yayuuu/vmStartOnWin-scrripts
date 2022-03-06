@@ -1,0 +1,73 @@
+#!/bin/bash
+scream &
+clip_sync &
+browser_sync &
+
+if [ -z "$1" ]
+   then
+      title="Looking Glass (client)"
+   else
+      title=$1
+fi
+
+#somehow looking glass window doesn't want to open on my main monitor (2nd from left) so this script moves it forcibly after it starts
+#(works on gnome only)
+
+JS="""
+const Mainloop = imports.mainloop;
+const GLib = imports.gi.GLib;
+var iterator = 0;
+
+function try_to_move(){
+    var found = false;
+    iterator=iterator+1;
+    global.get_window_actors().forEach(function (w) {
+        var mw = w.meta_window;
+        if(mw.get_title() == '"$title"') {
+            found = true;
+            Mainloop.timeout_add(300, () => mw.move_resize_frame(0, 1921, 0, 2560, 1080));
+        }
+    });
+    if(!found && iterator<1000){
+        Mainloop.timeout_add(10, () => try_to_move());
+    } else {
+        return false;
+    }
+};
+
+Mainloop.timeout_add(10, () => try_to_move());
+"""
+
+gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell --method org.gnome.Shell.Eval "$JS"
+
+#end of gnome-specific code
+
+looking-glass-client -f /dev/shm/looking-glass -c 0.0.0.0 -p 1232 \
+win:borderless \
+win:size=2560x1080 \
+win:showFps \
+win:fpsMin=40 \
+win:jitRender=no \
+app:renderer=OpenGL \
+input:mouseRedraw=no \
+input:ignoreWindowsKeys \
+input:autoCapture=yes \
+input:grabKeyboardOnFocus \
+spice:clipboard \
+spice:alwaysShowCursor \
+win:quickSplash \
+input:escapeKey=125 \
+win:fullScreen \
+input:rawMouse \
+win:ignoreQuit \
+opengl:mipmap=no \
+opengl:vsync=no \
+opengl:preventBuffer=no \
+opengl:amdPinnedMem=yes \
+win:title="$title" \
+app:framePollInterval=2000 \
+input:mouseSens=6
+
+killall scream
+killall clip_sync
+ps x -o pid,command | grep "ssh yayuu@192.168.5.139 -p 222 tail -n 0 -f /mnt/c/ssh/links.list" | head -n1 | awk '{print $1;}' | xargs -n1 kill -9

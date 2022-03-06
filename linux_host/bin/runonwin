@@ -1,0 +1,37 @@
+#!/bin/bash
+
+bgcolor="#000000"
+wait="0.5"
+
+while [ $# -gt 0 ]; do
+
+   if [[ $1 == *"--"* ]]; then
+        param="${1/--/}"
+        declare $param="$2"
+        echo $1 $2
+        shift
+   else
+   	winpath=$1
+   	echo "Winpath is $winpath"
+   	if [ -z "$appname" ]; then
+	      echo "mieli"
+	      basename=${winpath##*\\}
+	      appname=${basename%.*}
+	fi
+   fi
+
+  shift
+done
+
+echo "App to start is $winpath"
+echo "App name is $appname"
+echo "Wait time is $wait"
+echo "Background color is $bgcolor"
+echo "run-wait-for-start \"$winpath\" \"$appname\" \"$wait\" \"$bgcolor\""
+ssh -t yayuu@192.168.5.139 -p 222 "run-wait-for-start \"$winpath\" \"$appname\" \"$wait\" \"$bgcolor\""
+
+echo "App started"
+nohup looking-glass "$appname" &
+echo "LG started"
+ssh -t yayuu@192.168.5.139 -p 222 "wait-for-close \"$appname\""
+killall looking-glass-client

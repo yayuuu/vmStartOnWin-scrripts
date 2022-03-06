@@ -1,0 +1,10 @@
+#!/bin/bash
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Users/yayuu/AppData/Local/Microsoft/WindowsApps"
+
+cd /mnt/c/SSH
+echo $1
+echo $2
+echo $3
+echo $4
+powershell.exe -File run-wait-for-start.ps1 "$1" "$2" "$3" "$4"
+ps -fu yayuu | grep -i yayuu@notty | grep -v grep | tail -n 1 | awk '{print $2}'| xargs -i kill -9 {}

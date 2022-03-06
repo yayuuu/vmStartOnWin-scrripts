@@ -1,0 +1,3 @@
+#!/bin/bash
+#change microsoft-edge in the command below to the browser you are using in your linux system
+ssh yayuu@192.168.5.139 -p 222 "tail -n 0 -f /mnt/c/ssh/links.list" | stdbuf -o0 tr -d '\000' | xargs -n1 -r microsoft-edge

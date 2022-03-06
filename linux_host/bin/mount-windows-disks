@@ -1,0 +1,4 @@
+#!/bin/bash
+sleep 25
+sshfs yayuu@192.168.5.139:/mnt/a /mnt/a -p 222
+sshfs yayuu@192.168.5.139:/mnt/c /mnt/c -p 222

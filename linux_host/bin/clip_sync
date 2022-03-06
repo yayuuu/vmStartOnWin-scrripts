@@ -1,0 +1,15 @@
+#!/bin/bash
+
+lastclip=``
+clip=$(xclip -selectioon c -o)
+
+while [ true ]
+do
+    if [[ "$clip" == "$lastclip" ]]; then
+        sleep 0.2
+    else
+        lastclip=$clip
+        echo $clip | ssh yayuu@192.168.5.139 -p 222 clip.exe
+    fi
+    clip=$(xclip -selectioon c -o)
+done

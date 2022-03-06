@@ -1,0 +1,1 @@
+WScript.CreateObject("WScript.Shell").Run "C:\SSH\ssh_start.bat", 0 , false
