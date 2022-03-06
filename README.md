@@ -30,3 +30,5 @@ Instead press windows key > run and type shell:startup then place a shortcut to 
 
 run autostart.reg
 run edge_redirect.reg
+
+Install SSH keys so you can connect from your linux host to windows VM without password
